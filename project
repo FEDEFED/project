@@ -1,0 +1,44 @@
+DIR="~/projects/$1"
+
+if [ $1 = '-r' ];then
+  if [ -d "/home/federico/projects/$2" ]; then
+    echo The project $2 will be deleted
+    echo Are you sure? Press CtrlC if you are not
+    read issure
+    rm -R /home/federico/projects/$2
+  else
+    echo No project called $2
+  fi
+
+else
+  DIR="/home/federico/projects/$1"
+  if [ -d "$DIR" ]; then
+    if [ -f "main.py" ]; then
+
+      echo "Project already exist, opening main.py"
+      cd $DIR
+      gnome-terminal --working-directory=$DIR &
+      nano main.py
+
+    else
+
+      echo "Project already exist, but it is a library"
+      echo "What module shuold I open? (string_match)"
+      read filnam
+      cd $DIR
+      gnome-terminal --working-directory=$DIR &
+      nano *${filnam}*
+
+    fi
+  else
+
+    echo Creating project
+    mkdir $DIR
+    cd $DIR
+    echo "#Main">main.py
+    echo "#ECP">ecp.py
+    gnome-terminal --working-directory=$DIR &
+    nano main.py
+
+  fi
+fi
